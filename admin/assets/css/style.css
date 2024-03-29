@@ -1,0 +1,571 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --primary-color: #000;
+}
+
+li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+/* 
+ page navbar.php start
+*/
+
+ #header{
+    max-width: 350px;
+    background-color: rgb(99, 98, 98);
+    height: 100vh;
+    position: fixed;
+}
+#header .icons-admin-profile img{
+    margin-left: 25px;
+    margin-right: 25px;
+    width: 300px;
+}
+.active{
+    max-width: fit-content;
+    background-color: black;
+    color: white;
+    border-radius: 7px;
+    padding: 6px 20px;
+}
+#header nav{
+    margin-left: 40px; 
+    margin-top: -30px;
+}
+#header nav ul a{
+    color: var(--primary-color);
+}
+#header nav ul li{
+    margin-bottom: 20px;
+}
+#header nav ul a li{
+    font-size: 30px;
+    font-weight: 600;
+} 
+
+
+
+/* 
+ page navbar.php end
+*/
+
+
+/* 
+ page home.php start
+*/
+.container{
+    display: flex;
+}
+
+.home{
+    margin-left: 370px;
+}
+.home .home-title{
+    margin-top: 60px;
+    padding-bottom: 5px;
+    font-size: 35px;
+    border-bottom: 2px solid red;
+    max-width: fit-content;
+}
+.home .icon-category{
+    position: fixed;
+    border-radius: 50%;
+    right: 50px;
+    bottom: 30px;
+    background-color: red;
+    max-width: fit-content;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    cursor: pointer;
+}
+.home .icon-category i{
+    font-size: 40px;
+    color: #fff;
+    font-weight: bolder;
+    padding: 10px;
+}
+
+.home .add-category{
+    margin-top: 20px;
+    width: 960px;
+    /* background-color: rebeccapurple; */
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 30px;  
+}
+
+.home .add-category .food-content{
+    background-color:  #575656;
+    overflow: hidden;
+    max-width: 300px;
+    text-align: center;
+    cursor: pointer;
+}
+.home .add-category .food-content #editBtn{
+    float: left;
+    margin-left: 5px;
+    margin-top: 2px;
+    color: black;
+}
+.home .add-category .food-content #deleteBtn{
+    float: right;
+    margin-right: 5px;
+    margin-top: 2px;
+    color: black;
+}
+.home .add-category .food-content h2{
+    margin-top: 10px;
+}
+
+.home .add-category .food-content .img-container img{
+    margin-top: 10px;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+   
+}
+
+/* add category */
+#add_Category{
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+#add_Category .main{
+      background-color: #360707;
+      height: 400px;
+      width: 400px;
+      display: grid;
+      text-align: center;
+      border-radius: 10px;
+}
+
+#add_Category .main i{
+    float: right;
+    margin-right: 10px;
+    margin-top: 10px;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+}
+#add_Category .main h2{
+    color: #fff;
+    font-weight: 400;
+    font-size: 34px;
+    margin-top: -20px;
+}
+
+#add_Category div input[type="file"] {
+    cursor: pointer;
+    padding: 10px ;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 5px;
+    width: 250px; 
+    border: none;
+    outline: none;
+}
+
+#add_Category div input[type="file"]:hover {
+    background-color: #45a049;
+}
+
+#add_Category div input[type="file"]:active {
+    background-color: #3e8e41;
+}
+
+#add_Category .main #form #title{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    outline: none;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    width: 300px;
+}
+#add_Category .main #form .btn-add, .add_products .main .btn-add{
+    padding: 10px 20px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    background-color: #4caf50;
+    color: #fff;
+    font-size: 17px;
+}
+/* 
+ page home.php end
+*/
+
+
+/* 
+ page add-product.php start
+*/
+.add_products{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-left: 500px;
+}
+
+.add_products .main {
+    background-color: #360707;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+.add_products .main h1 {
+    margin-bottom: 20px;
+    color: white;
+}
+
+.add_products .main .file_image {
+    margin-bottom: 20px;
+}
+
+.add_products .main .file_image input[type="file"] {
+    cursor: pointer;
+    padding: 10px ;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 5px;
+    width: 250px; 
+    border: none;
+    outline: none;
+}
+
+.add_products .main  input[type="text"],
+.add_products .main textarea {
+    width: calc(100% - 40px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add_products .main .Categorsss{
+    margin-bottom: 20px;
+    width: 100px;
+    height: 30px;
+}
+
+/* 
+ page add-product.php end
+*/
+
+
+/* 
+ page view-products.php start
+*/
+.view-products{
+    margin-left: 370px;
+}
+
+.view-products .product-title{
+    margin-top: 60px;
+    margin-bottom: 30px;
+    font-weight: 400;
+    padding-bottom: 5px;
+    font-size: 35px;
+    border-bottom: 2px solid red;
+    max-width: fit-content;
+}
+.view-products .label-category{
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.view-products .select_category{
+    width: 100px;
+    height: 30px;
+    font-size: 15px;
+}
+
+.view-products .pro{
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    padding-top: 20px;
+    flex-wrap: wrap;
+}
+
+.view-products .pro .product{
+    width: 23%;
+    min-width: 230px;
+    padding: 10px 12px;
+    border: 1px solid rgba(43, 38, 38, 0.5);
+    border-radius: 20px;
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
+    margin: 15px 0px;
+    transition: 0.2s ease;
+    -webkit-transition: 0.2s ease;
+    -moz-transition: 0.2s ease;
+    -ms-transition: 0.2s ease;
+    -o-transition: 0.2s ease;
+    cursor: pointer;
+    background: rgba(43, 38, 38, 0.7);
+}
+
+.view-products .pro .product #deleteBtn{
+    float: right;
+    color: black;
+}
+.view-products .pro .product #editBtn{
+    color: black;
+}
+
+.view-products .pro .product img{
+    margin-top: 3px;
+    width: 204px;
+    height: 200px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.view-products .pro .product .des {
+    text-align: start;
+    padding-top: 5px ;
+}
+
+.view-products .pro .product .des h5{
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 190px;
+    text-overflow: ellipsis;
+}
+.view-products .pro .product .des p{
+    font-size: 16px;
+}
+
+/* 
+ page view-products.php end
+*/
+
+
+/* 
+ page customer.php start
+*/
+.view-Customer{
+    margin-left: 370px;
+}
+
+.view-Customer .Customer-title{
+    margin-top: 60px;
+    margin-bottom: 30px;
+    font-weight: 400;
+    padding-bottom: 5px;
+    font-size: 35px;
+    border-bottom: 2px solid red;
+    max-width: fit-content;
+}
+
+.view-Customer table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.view-Customer th,
+.view-Customer td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.view-Customer th {
+    background-color: #333;
+    color: white;
+}
+
+.view-Customer tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* 
+ page customer.php end
+*/
+
+
+/* 
+ page setting.php start
+*/
+.view-admin{
+    margin-left: 370px;
+}
+
+.view-admin .user-informations{
+    width: 700px;
+    background-color: #c7c2c2;
+    height: 320px;
+    margin-left: 100px;
+    margin-top: 100px;
+}
+.view-admin .user-informations .table-info {
+    width: 600px;
+    margin-top: 20px;
+    margin-left: 20px;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.view-admin .user-informations .table-info .title-Info{
+    border-bottom: 3px solid black;
+    width: 100%;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+}
+
+.view-admin .user-informations .table-info .data-info td {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+/* 
+ page setting.php end
+*/
+
+
+/* 
+ page update-products.php start
+*/
+.update-products{
+    margin-left: 370px;
+}
+
+.update-products .container_update{
+    background-color: gray;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 500px;
+    margin-left: 200px;
+    margin-top: 100px;
+}
+.update-products .container_update .h2title{
+    margin-bottom: 20px;
+    font-size: 30px;
+}
+.update-products .container_update #back_arrows{
+    width: 50px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.update-products .container_update #back_arrows i{
+    font-size: 30px;
+    color: black;
+}
+
+.update-products .container_update .description{
+    display: block;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.update-products .container_update .txt-description{
+    padding: 5px;
+    outline: none;
+}
+.update-products .container_update .price{
+    display: block;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.update-products .container_update .txt-price{
+    padding: 5px;
+    outline: none;
+}
+/* 
+ page update-products.php end
+*/
+
+
+/* 
+ page update-category.php start
+*/
+.update-category{
+    margin-left: 370px;
+}
+
+.update-category .container_update{
+    background-color: gray;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 500px;
+    margin-left: 200px;
+    margin-top: 100px;
+}
+.update-category .container_update .h2title{
+    margin-bottom: 20px;
+    font-size: 30px;
+}
+.update-category .container_update #back_arrows{
+    width: 50px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.update-category .container_update #back_arrows i{
+    font-size: 30px;
+    color: black;
+}
+.update-category .container_update #fileInput{
+    cursor: pointer;
+    padding: 10px ;
+    background-color: #363f37;
+    color: #fff;
+    border-radius: 5px;
+    width: 250px; 
+    border: none;
+    outline: none;
+    margin-bottom: 7px;
+}
+.update-category .container_update .title{
+    display: block;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.update-category .container_update .txt-title{
+    padding: 5px;
+    outline: none;
+}
+/* 
+ page update-category.php end
+*/
