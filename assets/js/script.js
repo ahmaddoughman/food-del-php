@@ -52,7 +52,7 @@ function handleButtonClick(button) {
     var imageSource = productDiv.querySelector('img').src;
 
     selectImageAndPrice(imageSource, priceText, descriptionText);
-    moveToPage2();
+    moveToPage2(button);
 }
 
 function selectImageAndPrice(imageSource, price, desc) {
@@ -61,8 +61,11 @@ function selectImageAndPrice(imageSource, price, desc) {
     sessionStorage.setItem('selectedDesc', desc);
 }
 
-function moveToPage2() {
-    window.location.href = 'product.php';
+function moveToPage2(button) {
+    var categoryId = button.getAttribute('data-category-id');
+    console.log("Category ID: " + categoryId);
+
+    window.location.href = 'product.php?id=' + categoryId;
 }
 
 // page food-menu.php end

@@ -10,11 +10,27 @@
 </head>
 
 <body>
+    <?php
+    include('config/conn-database.php');
+    // 1. Get the ID of selected category
+    $id = $_GET['id'];
 
+    // 2. Create SQL Query to Get the Details 
+    $sql = "SELECT * FROM category WHERE id=$id";
+    // Execute the Query
+    $result = mysqli_query($conn, $sql);
+
+    if ($result->num_rows > 0) {
+        // Get the Details
+        while ($row = $result->fetch_assoc()) {
+            $id = $row["id"];
+        }
+    }
+    ?>
     <div class="products-food">
         <section class="container">
             <div class="prodetails product">
-                <a href="food-menu.php" class="back"><i class="fa-solid fa-arrow-left"></i></a>
+                <a href="food-menu.php?id=<?php echo $id ?>" class="back"><i class="fa-solid fa-arrow-left"></i></a>
                 <div class="single-pro-image">
                     <div id="selectedImageContainer"></div>
                 </div>

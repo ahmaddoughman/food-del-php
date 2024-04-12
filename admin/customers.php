@@ -1,3 +1,6 @@
+<?php
+include('../config/conn-database.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,21 +32,35 @@
                         <th>DOB</th>
                         <th>Gender</th>
                         <th>Phone</th>
+                        <th>Join-Date</th>
                         <th>Feedback</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Ahmad Doughman</td>
-                        <td>ahmad@gmail.com</td>
-                        <td>1234567890</td>
-                        <td>14-6-2000</td>
-                        <td>Male</td>
-                        <td>71-653043</td>
-                        <td>best website</td>
-                    </tr>
-                </tbody>
+
+                <?php
+                $sql = "SELECT * FROM users";
+                $result = mysqli_query($conn, $sql);
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo " <tbody>
+                                    <tr>
+                                        <td>".$row['id']."</td>
+                                        <td>".$row['name']."</td>
+                                        <td>".$row['email']."</td>
+                                        <td>".$row['password']."</td>
+                                        <td>".$row['birth']."</td>
+                                        <td>".$row['gender']."</td>
+                                        <td>".$row['mobile']."</td>
+                                        <td>".$row['joindate']."</td>
+                                        <td>".$row['feedback']."</td>
+                                    </tr>
+                                </tbody>";
+                    }
+                }
+
+                ?>
+
             </table>
         </div>
     </div>

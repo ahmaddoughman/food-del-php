@@ -1,3 +1,4 @@
+<?php include("config/conn-database.php") ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +8,25 @@
     <title>Login</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showSweetAlert(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+            });
+        }
+
+        function showSweetAlert1(message, icon) {
+            Swal.fire({
+                icon: icon,
+                title: 'Notification',
+                text: message,
+            });
+        }
+    </script>
 </head>
 
 <body class="login-background">
@@ -24,6 +44,41 @@
         </form>
         <p>Not a member?<a href="sign-up.php" target="_blank"> Sign-up</a></p>
     </div>
+
+    <?php 
+    if(isset($_POST['login'])){
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        $sql = "SELECT * FROM users WHERE email = '{$email}'";
+        $result = mysqli_query($conn, $sql);
+
+        $row = mysqli_fetch_assoc($result);
+
+        if($result->num_rows > 0){
+            if($password == $row['password']){
+                $_SESSION['login-user'] = true;
+                $_SESSION["id"] = $row["id"];
+                $_SESSION["user_info"] = $row; // Store user information in session
+
+                echo '<script>
+                    showSweetAlert1("login confirm successfully", "success");
+                    setTimeout(function() {
+                        window.location.href = "index.php";
+                    }, 3000); 
+                  </script>';
+                exit();
+            }
+            else {
+                echo '<script>showSweetAlert1("password are incorrect: ' . $conn->error . '", "error");</script>';
+            }
+        }
+        else {
+            echo '<script>showSweetAlert1("Email are incorrect: ' . $conn->error . '", "error");</script>';
+        }
+    }
+    ?>
+
 
     <script>
         var email = document.getElementById("email");

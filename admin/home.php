@@ -1,3 +1,4 @@
+<?php include('../config/conn-database.php') ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +8,25 @@
     <title>Document</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showSweetAlert(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+            });
+        }
+
+        function showSweetAlert1(message, icon) {
+            Swal.fire({
+                icon: icon,
+                title: 'Notification',
+                text: message,
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -14,6 +34,25 @@
     <div class="container">
         <?php
         include("navbar.php");
+
+
+
+        if (isset($_SESSION['added-category'])) {
+
+            echo '<script> showSweetAlert1("Added Successfully", "success"); </script>';
+
+            unset($_SESSION['added-category']);
+        }
+        else if (isset($_SESSION['delete-categoty'])) {
+
+            echo '<script> showSweetAlert1("Delete Successfully", "success"); </script>';
+
+            unset($_SESSION['delete-categoty']);
+        }
+
+        $sql = "SELECT * FROM category";
+        $result = $conn->query($sql);
+
         ?>
 
         <div class="home">
@@ -21,39 +60,32 @@
             <h2 class="home-title">Category</h2>
 
             <div class="add-category">
-                <div class="food-content">
-                    <a href="update-category.php" id="editBtn"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a href="#" id="deleteBtn"><i class="fa-solid fa-circle-xmark"></i></a>
 
-                    <h2>breakfast</h2>
-                    <div class="img-container">
-                        <img src="../assets/image/service-1.jpg" alt="">
-                    </div>
-                </div>
-                <div class="food-content">
-                    <a href="update-product.php" id="editBtn"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a href="#" id="deleteBtn"><i class="fa-solid fa-circle-xmark"></i></a>
-                    <h2>dinner</h2>
-                    <div class="img-container">
-                        <img src="../assets/image/service-2.jpg" alt="">
-                    </div>
-                </div>
-                <div class="food-content">
-                    <a href="update-product.php" id="editBtn"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a href="#" id="deleteBtn"><i class="fa-solid fa-circle-xmark"></i></a>
-                    <h2>title </h2>
-                    <div class="img-container">
-                        <img src="../assets/image/hero-slider-3.jpg" alt="">
-                    </div>
-                </div>
-                <div class="food-content">
-                    <a href="update-product.php" id="editBtn"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a href="#" id="deleteBtn"><i class="fa-solid fa-circle-xmark"></i></a>
-                    <h2>title</h2>
-                    <div class="img-container">
-                        <img src="../assets/image/hero-slider-1.jpg" alt="">
-                    </div>
-                </div>
+                <?php
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<div class='food-content'>";
+                            echo "<a href='update-category.php?id=" . $row['id'] . "' id='editBtn'>
+                                    <i class='fa-solid fa-pen-to-square'></i>
+                                  </a>
+
+                                  <a href='delete-category.php?id=" . $row['id'] . "' id='deleteBtn'>
+                                    <i class='fa-solid fa-circle-xmark'></i>
+                                  </a>";
+
+                            echo "<h2> " . $row['title_category'] . " </h2>
+                                  <div class='img-container'>
+                                      <img src='../assets/image/" . $row['image_path'] . "'  alt='img'>
+                                  </div>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "No category found";
+                }
+
+                $conn->close();
+                ?>
+
             </div>
 
 
@@ -70,16 +102,16 @@
                 <div class="main">
                     <span id="closeBtn"><i class="fa-solid fa-circle-xmark"></i></span>
                     <h2>Add Category</h2>
-                    <form action="" method="post" id="form">
+                    <form action="add-category.php" method="post" id="form" enctype="multipart/form-data">
                         <div>
                             <input type="file" id="fileInput" name="image" required>
                         </div>
 
                         <div>
-                            <input type="text" placeholder="Title" id="title" required>
+                            <input type="text" placeholder="Title" id="title" name="title_category" required>
                         </div>
 
-                        <button type="submit" class="btn-add">Add</button>
+                        <button type="submit" name="add-category" class="btn-add">Add</button>
                     </form>
                 </div>
             </section>

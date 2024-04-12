@@ -1,4 +1,5 @@
-<?php include("config/conn-database.php") ?>
+<?php include("../config/conn-database.php");?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign up</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -29,9 +30,9 @@
     </script>
 </head>
 
-<body class="login-background">
+<body >
     <div class="Signup-form">
-        <a href="login.php" class="back"><i class="fa-solid fa-arrow-left"></i></a>
+        <a href="index.php" class="back"><i class="fa-solid fa-arrow-left"></i></a>
         <h1>Register</h1>
         <form action="" method="POST">
 
@@ -64,7 +65,7 @@
             <br>
             <span id="valphone">Please enter phone</span>
             <div>
-                <input type="text" class="box" id="phone" name="phone" placeholder="Phone number" required>
+                <input type="text" class="box" id="phone" name="mobile" placeholder="Phone number" required>
             </div>
 
             <div>
@@ -73,52 +74,66 @@
         </form>
     </div>
 
-    <?php
-    if (isset($_POST['signup'])) {
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $birth = date('Y-m-d', strtotime($_POST['birth'])); 
-        $gender = $_POST['gender'];
-        $phone = $_POST['phone'];
-        $creation_date = date("Y-m-d H:i:s");
+    
 
-        $selectQuery = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    <?php 
+
+    if(isset($_POST["signup"])){
+        $name = $_POST["name"];
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+        $birth = date('Y-m-d', strtotime($_POST['birth']));
+        $gender =$_POST["gender"];
+        $phone = $_POST["mobile"];
+
+        $selectQuery = $conn->prepare("SELECT * FROM admins WHERE email = ?");
         $selectQuery->bind_param("s", $email);
         $selectQuery->execute();
-        $check_select = $selectQuery->get_result();
+        $result = $selectQuery->get_result();
 
-        if ($check_select->num_rows > 0) {
+        if ($result->num_rows > 0) {
             echo '<script>showSweetAlert("Email already Exists. Try again");</script>';
         } else {
+            
+            $insertQuery = $conn->prepare("INSERT INTO admins (name, email, password, birth, gender, mobile) VALUES (?, ?, ?, ?, ?, ?)");
+            $insertQuery->bind_param("sssssi", $name, $email, $password, $birth, $gender, $phone);
 
-            $sql = "INSERT INTO users (name, email, password, birth, gender, mobile, joindate) VALUES ('$name', '$email', '$password', '$birth', '$gender', '$phone', '$creation_date')";
-            $result = mysqli_query($conn, $sql);
-            if ($result) {
-
-                $get_data = $conn->query("SELECT * FROM users WHERE id = LAST_INSERT_ID()");
+            if ($insertQuery->execute()) {
+                
+                $result = $conn->query("SELECT * FROM admins WHERE id = LAST_INSERT_ID()");
+            
                 // Store admin information in session
-                if ($get_data->num_rows > 0) {
-                    $row = $get_data->fetch_assoc();
-                    $_SESSION['sign-up-user'] = true;
-                    $_SESSION["user_info"] = $row;
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $_SESSION["sign_up_admin"] = true;
+                    $_SESSION["admin_info"] = $row;
+            
                     echo '<script>
-                            showSweetAlert1("Sign up successfully", "success");
-                            setTimeout(function() {
-                                window.location.href = "index.php";
-                            }, 2000); 
-                        </script>';
+                        showSweetAlert1("New record inserted successfully", "success");
+                        setTimeout(function() {
+                            window.location.href = "home.php";
+                        }, 2000); 
+                      </script>';
                     exit();
-                }else {
-                    echo '<script>showSweetAlert1("Error retrieving user information", "error");</script>';
+                } else {
+                    echo '<script>showSweetAlert1("Error retrieving admin information", "error");</script>';
                 }
-            }else {
+            
+                $selectQuery->close();
+            } else {
                 echo '<script>showSweetAlert1("Error inserting record: ' . $conn->error . '", "error");</script>';
-            } 
+            }
+
+            $insertQuery->close();
         }
-        $conn->close();
+
+        $selectQuery->close();
     }
+
+    $conn->close();
+    
     ?>
+    
 
     <script>
         var email = document.getElementById("email");
@@ -186,10 +201,6 @@
                 isValid = false;
             }
 
-            // Prevent form submission if any field is empty
-            // if (email.value.trim() === "" || password.value.trim() === "" || birth.value.trim() === "" || phone.value.trim() === "" || male.value.trim() === "" || female.value.trim() === "") {
-            //     return false;
-            // } 
             if (!isValid) {
                 return false;
             } else {
@@ -268,6 +279,7 @@
         }
     </script>
 
+    
 </body>
 
 </html>

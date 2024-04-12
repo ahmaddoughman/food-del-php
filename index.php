@@ -1,3 +1,4 @@
+<?php include('config/conn-database.php')?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +9,28 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showSweetAlert(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+            });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showSweetAlert1(message, icon) {
+            Swal.fire({
+                icon: icon,
+                title: 'Notification',
+                text: message,
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -70,41 +93,25 @@
                         <h1>We Offer Top Notch</h1>
                     </div>
                     <div class="category-menu">
-                        <div class="content-menu">
-                            <div class="img-backgroud">
-                                <img src="assets/image/service-2.jpg" alt="">
-                            </div>
-                            <div class="title">Breakfast</div>
-                            <a href="food-menu.php" class="view-menu">VIEW MENU</a>
-                        </div>
-                        <!-- <div class="content-menu">
-                            <div class="img-backgroud">
-                                <img src="assets/image/service-3.jpg" alt="">
-                            </div>
-                            <div class="title">Drinks</div>
-                            <a href="food-menu.php" class="view-menu">VIEW MENU</a>
-                        </div>
-                        <div class="content-menu">
-                            <div class="img-backgroud">
-                                <img src="assets/image/service-1.jpg" alt="">
-                            </div>
-                            <div class="title">Appetizers</div>
-                            <a href="food-menu.php" class="view-menu">VIEW MENU</a>
-                        </div>
-                        <div class="content-menu">
-                            <div class="img-backgroud">
-                                <img src="assets/image/hero-slider-1.jpg" alt="">
-                            </div>
-                            <div class="title">Breakfast</div>
-                            <a href="">VIEW MENU</a>
-                        </div>
-                        <div class="content-menu">
-                            <div class="img-backgroud">
-                                <img src="assets/image/service-1.jpg" alt="">
-                            </div>
-                            <div class="title">Breakfast</div>
-                            <a href="">VIEW MENU</a>
-                        </div> -->
+                        <?php 
+                        
+                        $sql = "SELECT * FROM category";
+                        $result = mysqli_query($conn, $sql);
+                        if($result->num_rows > 0){
+                            while($row = $result->fetch_assoc()){
+                                echo "<div class='content-menu'>
+                                        <div class='img-backgroud'>
+                                           <img src='assets/image/" . $row['image_path'] . "'  alt='img'>
+                                        </div>
+                                        <div class='title'>".$row['title_category']."</div>
+                                        <a href='food-menu.php?id=" . $row['id'] . "' class='view-menu'>VIEW MENU</a>
+                                    </div>";
+                            }
+                        }else {
+                            echo "No category found";
+                        }
+                        
+                        ?>
                     </div>
                 </div>
 
@@ -326,12 +333,44 @@
                         <div><img src="assets/image/separator.png" alt=""></div>
                         <h1><i class="fa-solid fa-headset"></i> Get In <span class="text-primary">Touch</span></h1>
                     </div>
-                    <form action="" class="contact-feedback">
+                    <form action="" class="contact-feedback" method="post">
                         <input type="text" name="name" placeholder="Name" required>
                         <input type="email" name="email" placeholder="Email" required>
                         <textarea name="feedback" id="" cols="30" rows="10" placeholder="Message" required></textarea>
-                        <button class="btn">Submit</button>
+                        <button class="btn" name="send_feedback">Submit</button>
                     </form>
+
+                    <?php 
+                    if(isset($_POST['send_feedback'])){
+                        $name = $_POST['name'];
+                        $email = $_POST['email'];
+                        $feedback = $_POST['feedback'];
+
+                        $sql = "SELECT * FROM users where email = '{$email}'";
+                        $result = mysqli_query($conn, $sql);
+                       
+                        if($result->num_rows > 0){
+                            $row = $result->fetch_assoc();
+
+                            if($name == $row['name']){
+                                $sql1 = "UPDATE users  SET feedback = '{$feedback}' WHERE id = '{$row['id']}'";
+                                $result1 = mysqli_query($conn, $sql1);
+                                
+                                if ($result1) {
+                                    echo '<script>showSweetAlert1("Message sent successfully", "success");</script>';
+                                } else {
+                                    echo '<script>showSweetAlert1("Problem sending message: ' . $conn->error . '", "error");</script>';
+                                }
+                            }
+                            else{
+                                echo '<script>showSweetAlert1("name are incorrect: ' . $conn->error . '", "error");</script>';
+                            }
+                        }
+                        else{
+                            echo '<script>showSweetAlert1("Email are incorrect: ' . $conn->error . '", "error");</script>';                       
+                        }
+                    }
+                    ?>
                 </div>
             </section>
 

@@ -993,7 +993,8 @@ header{
     font-size: 2rem;
 }
 .login-form span{
-    color: hsl(38,61%,73%); 
+    /* color: hsl(38,61%,73%);  */
+    color: red; 
     float: left;
     margin-left: 30px;
     display: none;
@@ -1093,7 +1094,7 @@ header{
 */
 .food-category {
     background: url(../image/background-food-menu.jpg);
-    /* height: 100%; */
+    min-height: 100vh;
     /* background-position: center; */
     background-repeat: no-repeat;
     background-size: cover;

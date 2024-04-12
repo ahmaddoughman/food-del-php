@@ -1,3 +1,35 @@
+<?php include("../config/conn-database.php");
+
+$admin_info = $_SESSION["admin_info"];
+
+if (isset($_POST["logout_admin"])) {
+    unset($_SESSION["admin_info"]);
+    unset($_SESSION["login_admin"]);
+    unset($_SESSION["sign_up_admin"]);
+    // session_unset(); 
+    // session_destroy(); 
+    header("Location: index.php");
+    exit();
+}
+
+$admin_id = $admin_info['id'];
+
+$sql = "SELECT * FROM admins WHERE id = $admin_id"; // Filter by user ID
+$result = $conn->query($sql);
+
+if ($result === false) {
+    die("Error in SQL query: " . $conn->error);
+}
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+} else {
+    // Handle the case when no rows are found
+    echo "No users found";
+    $conn->close();
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -112,7 +144,7 @@
                                 <label for="">Name : </label>
                             </td>
                             <td>
-                                <input type="text" name="username" value="Ahmad" class="textInput">
+                                <input type="text" name="username" value="<?php echo $row['name']; ?>" placeholder="No Name" class="textInput">
                             </td>
                             <td>
                                 <button type="button">Update</button>
@@ -123,7 +155,7 @@
                                 <label for="">Email :</label>
                             </td>
                             <td>
-                                <input type="email" name="email" value="ahmad@gmail.com" class="textInput">
+                                <input type="email" name="email" value="<?php echo $row['email']; ?>" placeholder="No email" class="textInput">
                             </td>
                             <td>
                                 <button type="button">Update</button>
@@ -134,7 +166,7 @@
                                 <label for="">Password :</label>
                             </td>
                             <td>
-                                <input type="password" name="password" value="123456789" class="textInput" id="passwordField" onclick="togglePasswordVisibility()">
+                                <input type="password" name="password" value="<?php echo $row['password']; ?>" placeholder="No password" class="textInput" id="passwordField" onclick="togglePasswordVisibility()">
                             </td>
                             <td>
                                 <button type="button">Update</button>
@@ -155,7 +187,7 @@
                                 <label for="">Phone :</label>
                             </td>
                             <td>
-                                <input type="tel" name="phone" value="71-653043" class="textInput">
+                                <input type="tel" name="phone" value="<?php echo  $row['mobile'];  ?>" placeholder="No number" class="textInput">
                             </td>
                             <td>
                                 <button type="button">Update</button>

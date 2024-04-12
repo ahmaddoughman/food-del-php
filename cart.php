@@ -1,3 +1,4 @@
+<?php include('config/conn-database.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body style="background: grey;">
@@ -43,9 +45,9 @@
                         </tr>
                         <tr>
                             <td colspan="5" style="text-align: right;">
-                                <form method="post" action="">
-                                    <input type="hidden">
-                                    <button id="purchaseButton" type="button">Purchase</button>
+                                <form method="post" action="your_purchase_handler.php" id="purchaseForm">
+                                    <input type="hidden" name="user_id" value="<?php echo isset($_SESSION["user_info"]["id"]) ? $_SESSION["user_info"]["id"] : ''; ?>">
+                                    <button id="purchaseButton" onclick="submitPurchaseForm()" type="button">Purchase</button>
                                 </form>
 
                             </td>
@@ -55,6 +57,68 @@
             </div>
         </div>
     </div>
+
+    <?php
+
+    $loggedIn = (isset($_SESSION["login-user"]) && $_SESSION["login-user"] === true) ||
+        (isset($_SESSION["sign-up-user"]) && $_SESSION["sign-up-user"] === true);
+    ?>
+
+    <script>
+        function submitPurchaseForm() {
+            // Assign the PHP boolean value to a JavaScript variable
+            var loggedIn = <?php echo $loggedIn ? 'true' : 'false'; ?>;
+
+            if (loggedIn) {
+
+                const cartItems = JSON.parse(localStorage.getItem('cart1')) || [];
+
+                const totalPriceElement = document.getElementById('totalPrice');
+                const totalPrice = parseFloat(totalPriceElement.innerText.replace(/\$/g, ''));
+
+                const purchaseData = cartItems.map(item => ({
+                    image_path: item.image,
+                    quantity: item.quantity || 1,
+                    price: parseFloat(item.price.replace(/\$/g, '') * (item.quantity || 1)),
+                    description: item.title,
+                    total_price: totalPrice.toFixed(2) 
+                }));
+
+                const user_id = <?php echo isset($_SESSION["user_info"]["id"]) ? $_SESSION["user_info"]["id"] : 'null'; ?>;
+                purchaseData.forEach(item => item.user_id = user_id);
+
+                $.ajax({
+                    type: "POST",
+                    url: "purchase_handler.php",
+                    data: {
+                        purchaseData: purchaseData
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.success) {
+
+                            alert("Purchase successful");
+                            clearCart()
+                        } else {
+                            alert("Purchase failed. " + response.message);
+                        }
+                    },
+                    error: function() {
+                        alert("Error processing the purchase request");
+                    }
+                });
+
+
+            } else {
+                var confirmPurchase = confirm("You are not logged in. Do you want to log in and proceed with the purchase?");
+                if (confirmPurchase) {
+                    // Redirect to the login page
+                    window.location.href = "login.php";
+                }
+            }
+        }
+    </script>
+
 
     <script>
         function displayCartItems() {
